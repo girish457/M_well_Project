@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 
 interface PriceFilterProps {
   minPrice: number
@@ -32,7 +32,7 @@ export default function PriceFilter({
     setLocalMaxPrice(maxPrice)
   }, [minPrice, maxPrice])
 
-  const updateSliderValue = (clientX: number) => {
+  const updateSliderValue = useCallback((clientX: number) => {
     if (!sliderRef.current) return
 
     const rect = sliderRef.current.getBoundingClientRect()
@@ -46,14 +46,14 @@ export default function PriceFilter({
       const newMax = Math.max(value, localMinPrice + 10)
       setLocalMaxPrice(Math.round(newMax))
     }
-  }
+  }, [isDragging, localMaxPrice, localMinPrice, minRange, maxRange])
 
   const handleMouseDown = (type: 'min' | 'max') => (e: React.MouseEvent) => {
     setIsDragging(type)
     e.preventDefault()
   }
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging) return
     
     if (animationFrameRef.current) {
@@ -63,7 +63,7 @@ export default function PriceFilter({
     animationFrameRef.current = requestAnimationFrame(() => {
       updateSliderValue(e.clientX)
     })
-  }
+  }, [isDragging, updateSliderValue])
 
   const handleMouseUp = () => {
     setIsDragging(null)
@@ -78,7 +78,7 @@ export default function PriceFilter({
     e.preventDefault()
   }
 
-  const handleTouchMove = (e: TouchEvent) => {
+  const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!isDragging || !e.touches[0]) return
     
     if (animationFrameRef.current) {
@@ -88,7 +88,7 @@ export default function PriceFilter({
     animationFrameRef.current = requestAnimationFrame(() => {
       updateSliderValue(e.touches[0].clientX)
     })
-  }
+  }, [isDragging, updateSliderValue])
 
   const handleTouchEnd = () => {
     setIsDragging(null)
@@ -114,7 +114,7 @@ export default function PriceFilter({
         }
       }
     }
-  }, [isDragging, localMinPrice, localMaxPrice])
+  }, [isDragging, localMinPrice, localMaxPrice, handleMouseMove, handleTouchMove])
 
   const minPercentage = ((localMinPrice - minRange) / (maxRange - minRange)) * 100
   const maxPercentage = ((localMaxPrice - minRange) / (maxRange - minRange)) * 100

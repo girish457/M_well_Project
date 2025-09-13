@@ -5,12 +5,12 @@ export default function Privacy() {
       <div className="prose prose-gray dark:prose-invert max-w-none">
         <p className="text-gray-700 dark:text-gray-300">
           This is our Privacy Policy page. You can customize this content with your
-          organization's actual privacy practices.
+          organization&apos;s actual privacy practices.
         </p>
       </div>
 
       <div className="text-center mt-20">
-        <p className="text-lg font-medium text-gray-900 dark:text-white">तो बताओ Dear ma'am/Sir कैसी लगी website ?</p>
+        <p className="text-lg font-medium text-gray-900 dark:text-white">तो बताओ Dear ma&apos;am/Sir कैसी लगी website ?</p>
         <div className="mt-3 text-5xl animate-bounce">😊</div>
       </div>
     </div>

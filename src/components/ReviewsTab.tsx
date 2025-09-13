@@ -97,7 +97,7 @@ export default function ReviewsTab({ userId }: ReviewsTabProps) {
       <div className="text-center py-12">
         <MessageSquare className="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No Reviews Yet</h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">You haven't reviewed any products yet. Share your experience!</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">You haven&apos;t reviewed any products yet. Share your experience!</p>
         <Link 
           href="/shop" 
           className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
@@ -166,7 +166,7 @@ export default function ReviewsTab({ userId }: ReviewsTabProps) {
                       {review.comment && (
                         <div className="mb-4">
                           <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                            "{review.comment}"
+                            &ldquo;{review.comment}&rdquo;
                           </p>
                         </div>
                       )}

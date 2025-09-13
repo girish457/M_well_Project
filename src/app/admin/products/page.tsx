@@ -13,12 +13,12 @@ export default function ProductsPage() {
 
   React.useEffect(() => { const t = sessionStorage.getItem('admin_token'); if (t) setToken(t) }, [])
 
-  const load = React.useCallback(() => {
+  const load = () => {
     fetch('/api/v2/products')
       .then(r => r.json()).then(d => setProducts(d.products || []))
-  }, [])
+  }
 
-  React.useEffect(() => { load() }, [load])
+  React.useEffect(() => { load() }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const create = async (e: React.FormEvent) => {
     e.preventDefault(); setError('')

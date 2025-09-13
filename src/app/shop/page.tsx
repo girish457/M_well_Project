@@ -522,7 +522,7 @@ export default function ShopPage() {
 		}
 
 		return filteredProducts
-	}, [appliedFilters, sortOption])
+	}, [searchResults, appliedFilters, sortOption])
 
 	const handlePriceChange = (min: number, max: number) => {
 		setMinPrice(min)

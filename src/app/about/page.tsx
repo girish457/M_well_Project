@@ -8,7 +8,7 @@ export default function About() {
   const [selectedMember, setSelectedMember] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const handleMemberClick = (member) => {
+  const handleMemberClick = (member: any) => {
     setSelectedMember(member)
     setIsModalOpen(true)
   }
@@ -260,7 +260,7 @@ export default function About() {
               <div className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed space-y-4">
                 <p className="font-semibold text-accent-600">A Healthier You, A Healthier World.</p>
                 <p>
-                  We envision a future where healthcare is simple, natural, and accessible to all. m-well Healthcare stands for trust, transparency, and transformation. Our vision is to be a leading force in holistic wellness, combining age-old herbal wisdom with modern science — to build a community that chooses healing over hiding. We don't just sell products — we offer a path to lifelong wellbeing.
+                  We envision a future where healthcare is simple, natural, and accessible to all. m-well Healthcare stands for trust, transparency, and transformation. Our vision is to be a leading force in holistic wellness, combining age-old herbal wisdom with modern science — to build a community that chooses healing over hiding. We don&apos;t just sell products — we offer a path to lifelong wellbeing.
                 </p>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default function About() {
               <div className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed space-y-4">
                 <p className="font-semibold text-green-600">Empowering Wellness, Naturally.</p>
                 <p>
-                  At m-well Healthcare, we go beyond treating symptoms — we believe in restoring balance and boosting vitality using the power of nature. From Anti-Anxiety drops to Super Herbs, our carefully crafted products are designed to support your physical, mental, and emotional health. Whether it's Woman Care, Man Care, or Anti-Addiction solutions, we focus on real results with no compromise on purity. Our mission? Simple — help you live better, feel better, and be better.
+                  At m-well Healthcare, we go beyond treating symptoms — we believe in restoring balance and boosting vitality using the power of nature. From Anti-Anxiety drops to Super Herbs, our carefully crafted products are designed to support your physical, mental, and emotional health. Whether it&apos;s Woman Care, Man Care, or Anti-Addiction solutions, we focus on real results with no compromise on purity. Our mission? Simple — help you live better, feel better, and be better.
                 </p>
               </div>
             </div>
@@ -288,7 +288,7 @@ export default function About() {
               <div className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed space-y-4">
                 <p className="font-semibold text-purple-600">It All Started With a Drop…</p>
                 <p>
-                  Our journey began with a simple goal: to fight addiction naturally. What started as one product to help one life has today grown into a brand that touches thousands. Founded by passionate minds, m-well Healthcare was built on the belief that natural remedies can be powerful, affordable, and life-changing. From our humble beginnings in a small clinic, we've evolved into a trusted name in wellness — all while keeping our roots in herbal healing strong and sacred.
+                  Our journey began with a simple goal: to fight addiction naturally. What started as one product to help one life has today grown into a brand that touches thousands. Founded by passionate minds, m-well Healthcare was built on the belief that natural remedies can be powerful, affordable, and life-changing. From our humble beginnings in a small clinic, we&apos;ve evolved into a trusted name in wellness — all while keeping our roots in herbal healing strong and sacred.
                 </p>
               </div>
             </div>

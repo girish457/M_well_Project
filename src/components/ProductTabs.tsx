@@ -232,7 +232,7 @@ export default function ProductTabs({ products }: ProductTabsProps) {
 
         {/* Tab Content - List Format */}
         <div className="grid grid-cols-1 gap-4">
-          {activeTabData?.products.map((product) => (
+          {activeTabData?.products.map((product) => product && (
             <div 
               key={product.id}
               className="flex gap-4 items-start p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-200"

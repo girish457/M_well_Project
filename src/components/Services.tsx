@@ -5,6 +5,11 @@ import React from 'react'
 import Link from 'next/link'
 
 export default function Services() {
+  const [showViewAll1, setShowViewAll1] = React.useState(false)
+  const [showViewAll2, setShowViewAll2] = React.useState(false)
+  const scrollRef1 = React.createRef<HTMLDivElement>()
+  const scrollRef2 = React.createRef<HTMLDivElement>()
+
   const categories = [
     { title: 'Daily Essentials', image: '/AllClear.jpg' },
     { title: 'Personal Care', image: '/Mencare.jpg' },
@@ -22,6 +27,36 @@ export default function Services() {
   ]
 
   const formatPrice = (price: number) => new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(price)
+
+  const onScroll1 = () => {
+    const el = scrollRef1.current
+    if (!el) return
+    setShowViewAll1(el.scrollLeft > 0)
+  }
+
+  const onScroll2 = () => {
+    const el = scrollRef2.current
+    if (!el) return
+    setShowViewAll2(el.scrollLeft > 0)
+  }
+
+  const scrollByAmount1 = (dir: 'left' | 'right') => () => {
+    const el = scrollRef1.current
+    if (!el) return
+    const amount = Math.max(280, Math.floor(el.clientWidth * 0.9))
+    el.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' })
+    if (dir === 'right') setShowViewAll1(true)
+    if (dir === 'left' && el.scrollLeft - amount <= 0) setShowViewAll1(false)
+  }
+
+  const scrollByAmount2 = (dir: 'left' | 'right') => () => {
+    const el = scrollRef2.current
+    if (!el) return
+    const amount = Math.max(280, Math.floor(el.clientWidth * 0.9))
+    el.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' })
+    if (dir === 'right') setShowViewAll2(true)
+    if (dir === 'left' && el.scrollLeft - amount <= 0) setShowViewAll2(false)
+  }
 
   return (
     <section className="bg-primary-50/40 dark:bg-gray-900 section-padding transition-all duration-500">
@@ -48,154 +83,110 @@ export default function Services() {
 
         {/* Recommended Products */}
         <div className="mt-16">
-          {(() => {
-            const items = products.slice(0, 4)
-            const scrollRef = React.createRef<HTMLDivElement>()
-            const [showViewAll, setShowViewAll] = React.useState(false)
-            const onScroll = () => {
-              const el = scrollRef.current
-              if (!el) return
-              setShowViewAll(el.scrollLeft > 0)
-            }
-            const scrollByAmount = (dir: 'left' | 'right') => () => {
-              const el = scrollRef.current
-              if (!el) return
-              const amount = Math.max(280, Math.floor(el.clientWidth * 0.9))
-              el.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' })
-              if (dir === 'right') setShowViewAll(true)
-              if (dir === 'left' && el.scrollLeft - amount <= 0) setShowViewAll(false)
-            }
-            return (
-              <>
-                <div className="flex items-center justify-between mb-6 animate-fade-in">
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Recommended M-Well Products</h3>
-                  <div className="hidden sm:flex items-center gap-3">
-                    <button aria-label="Scroll left" onClick={scrollByAmount('left')} className="w-8 h-8 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 shadow hover:shadow-md hover:-translate-y-0.5 transition">←</button>
-                    <button aria-label="Scroll right" onClick={scrollByAmount('right')} className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 shadow hover:shadow-md hover:-translate-y-0.5 transition">→</button>
+          <div className="flex items-center justify-between mb-6 animate-fade-in">
+            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Recommended M-Well Products</h3>
+            <div className="hidden sm:flex items-center gap-3">
+              <button aria-label="Scroll left" onClick={scrollByAmount1('left')} className="w-8 h-8 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 shadow hover:shadow-md hover:-translate-y-0.5 transition">←</button>
+              <button aria-label="Scroll right" onClick={scrollByAmount1('right')} className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 shadow hover:shadow-md hover:-translate-y-0.5 transition">→</button>
+            </div>
+          </div>
+          <div className="relative">
+            <div ref={scrollRef1} onScroll={onScroll1} className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none]" style={{scrollBehavior:'smooth'}}>
+              {/* hide scrollbar */}
+              <style jsx>{`
+                div::-webkit-scrollbar { display: none; }
+              `}</style>
+              {products.slice(0, 4).map((p, i) => (
+                <Link key={p.id} href={`/product/${p.id}`} className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+                  <div className="relative mx-6 my-4 rounded-xl bg-primary-50/60 dark:bg-gray-700/50" style={{ height: 320 }}>
+                    <Image src={p.image} alt={p.title} fill className="object-contain" />
+                    {p.discount ? (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow">-{p.discount}%</div>
+                    ) : null}
                   </div>
-                </div>
-                <div className="relative">
-                  <div ref={scrollRef} onScroll={onScroll} className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none]" style={{scrollBehavior:'smooth'}}>
-                    {/* hide scrollbar */}
-                    <style jsx>{`
-                      div::-webkit-scrollbar { display: none; }
-                    `}</style>
-                    {items.map((p, i) => (
-                      <Link key={p.id} href={`/product/${p.id}`} className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
-                        <div className="relative mx-6 my-4 rounded-xl bg-primary-50/60 dark:bg-gray-700/50" style={{ height: 320 }}>
-                          <Image src={p.image} alt={p.title} fill className="object-contain" />
-                          {p.discount ? (
-                            <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow">-{p.discount}%</div>
-                          ) : null}
-                        </div>
-                        <div className="px-4 pb-4">
-                          <h4 className="text-gray-800 dark:text-gray-100 font-semibold line-clamp-2 min-h-[3rem]">{p.title}</h4>
-                          <div className="mt-3 flex items-center justify-between text-sm">
-                            <div className="flex items-baseline gap-2">
-                              {p.originalPrice ? (
-                                <>
-                                  <span className="text-lg font-semibold text-red-600 dark:text-red-400">₹{formatPrice(p.price)}</span>
-                                  <span className="text-gray-400 line-through">₹{formatPrice(p.originalPrice)}</span>
-                                </>
-                              ) : (
-                                <span className="text-lg font-semibold text-primary-700 dark:text-primary-300">₹{formatPrice(p.price)}</span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1 text-amber-500 text-xs">
-                              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                              <span className="font-semibold">4.5 Star</span>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
+                  <div className="px-4 pb-4">
+                    <h4 className="text-gray-800 dark:text-gray-100 font-semibold line-clamp-2 min-h-[3rem]">{p.title}</h4>
+                    <div className="mt-3 flex items-center justify-between text-sm">
+                      <div className="flex items-baseline gap-2">
+                        {p.originalPrice ? (
+                          <>
+                            <span className="text-lg font-semibold text-red-600 dark:text-red-400">₹{formatPrice(p.price)}</span>
+                            <span className="text-gray-400 line-through">₹{formatPrice(p.originalPrice)}</span>
+                          </>
+                        ) : (
+                          <span className="text-lg font-semibold text-primary-700 dark:text-primary-300">₹{formatPrice(p.price)}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1 text-amber-500 text-xs">
+                        <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                        <span className="font-semibold">4.5 Star</span>
+                      </div>
+                    </div>
                   </div>
-                  {showViewAll && (
-                    <Link href="/shop" className="hidden sm:flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-0 mr-1 px-3 py-1.5 rounded-full bg-white/90 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-primary-700 dark:text-primary-300 font-semibold shadow hover:shadow-md transition">
-                      View all
-                    </Link>
-                  )}
-                </div>
-              </>
-            )
-          })()}
+                </Link>
+              ))}
+            </div>
+            {showViewAll1 && (
+              <Link href="/shop" className="hidden sm:flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-0 mr-1 px-3 py-1.5 rounded-full bg-white/90 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-primary-700 dark:text-primary-300 font-semibold shadow hover:shadow-md transition">
+                View all
+              </Link>
+            )}
+          </div>
         </div>
 
-        {/* Popular Products carousel (restored) */}
+        {/* Popular Products carousel */}
         <div className="mt-16">
-          {(() => {
-            const items = products.slice(0, 4)
-            const scrollRef = React.createRef<HTMLDivElement>()
-            const [showViewAll, setShowViewAll] = React.useState(false)
-            const onScroll = () => {
-              const el = scrollRef.current
-              if (!el) return
-              setShowViewAll(el.scrollLeft > 0)
-            }
-            const scrollByAmount = (dir: 'left' | 'right') => () => {
-              const el = scrollRef.current
-              if (!el) return
-              const amount = Math.max(280, Math.floor(el.clientWidth * 0.9))
-              el.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' })
-              if (dir === 'right') setShowViewAll(true)
-              if (dir === 'left' && el.scrollLeft - amount <= 0) setShowViewAll(false)
-            }
-            return (
-              <>
-                <div className="flex items-center justify-between mb-6 animate-fade-in">
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Popular Healthcare Products</h3>
-                  <div className="hidden sm:flex items-center gap-3">
-                    <button aria-label="Scroll left" onClick={scrollByAmount('left')} className="w-8 h-8 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 shadow hover:shadow-md hover:-translate-y-0.5 transition">←</button>
-                    <button aria-label="Scroll right" onClick={scrollByAmount('right')} className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 shadow hover:shadow-md hover:-translate-y-0.5 transition">→</button>
+          <div className="flex items-center justify-between mb-6 animate-fade-in">
+            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Popular Healthcare Products</h3>
+            <div className="hidden sm:flex items-center gap-3">
+              <button aria-label="Scroll left" onClick={scrollByAmount2('left')} className="w-8 h-8 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-100 shadow hover:shadow-md hover:-translate-y-0.5 transition">←</button>
+              <button aria-label="Scroll right" onClick={scrollByAmount2('right')} className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 shadow hover:shadow-md hover:-translate-y-0.5 transition">→</button>
+            </div>
+          </div>
+          <div className="relative">
+            <div ref={scrollRef2} onScroll={onScroll2} className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none]" style={{scrollBehavior:'smooth'}}>
+              <style jsx>{`
+                div::-webkit-scrollbar { display: none; }
+              `}</style>
+              {products.slice(0, 4).map((p, i) => (
+                <Link key={p.id} href={`/product/${p.id}`} className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
+                  <div className="flex items-center justify-between px-4 pt-4 text-xs">
+                    {p.discount ? (
+                      <span className="px-2 py-1 rounded-md bg-green-50 text-green-600 font-semibold">{p.discount}% OFF</span>
+                    ) : <span />}
+                    <span className="text-amber-500">1500 pts</span>
                   </div>
-                </div>
-                <div className="relative">
-                  <div ref={scrollRef} onScroll={onScroll} className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [-ms-overflow-style:none] [scrollbar-width:none]" style={{scrollBehavior:'smooth'}}>
-                    <style jsx>{`
-                      div::-webkit-scrollbar { display: none; }
-                    `}</style>
-                    {items.map((p, i) => (
-                      <Link key={p.id} href={`/product/${p.id}`} className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md overflow-hidden">
-                        <div className="flex items-center justify-between px-4 pt-4 text-xs">
-                          {p.discount ? (
-                            <span className="px-2 py-1 rounded-md bg-green-50 text-green-600 font-semibold">{p.discount}% OFF</span>
-                          ) : <span />}
-                          <span className="text-amber-500">1500 pts</span>
-                        </div>
-                        <div className="relative mx-6 my-4 rounded-xl bg-primary-50/60 dark:bg-gray-700/50" style={{ height: 320 }}>
-                          <Image src={p.image} alt={p.title} fill className="object-contain" />
-                        </div>
-                        <div className="px-4 pb-4">
-                          <h4 className="text-gray-800 dark:text-gray-100 font-semibold line-clamp-2 min-h-[3rem]">{p.title}</h4>
-                          <div className="mt-3 flex items-center justify-between text-sm">
-                            <div className="flex items-baseline gap-2">
-                              {p.originalPrice ? (
-                                <>
-                                  <span className="text-lg font-semibold text-red-600 dark:text-red-400">₹{formatPrice(p.price)}</span>
-                                  <span className="text-gray-400 line-through">₹{formatPrice(p.originalPrice)}</span>
-                                </>
-                              ) : (
-                                <span className="text-lg font-semibold text-primary-700 dark:text-primary-300">₹{formatPrice(p.price)}</span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1 text-amber-500 text-xs">
-                              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                              <span className="font-semibold">4.5 Star</span>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
+                  <div className="relative mx-6 my-4 rounded-xl bg-primary-50/60 dark:bg-gray-700/50" style={{ height: 320 }}>
+                    <Image src={p.image} alt={p.title} fill className="object-contain" />
                   </div>
-                  {showViewAll && (
-                    <Link href="/shop" className="hidden sm:flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-0 mr-1 px-3 py-1.5 rounded-full bg-white/90 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-primary-700 dark:text-primary-300 font-semibold shadow hover:shadow-md transition">
-                      View all
-                    </Link>
-                  )}
-                </div>
-              </>
-            )
-          })()}
+                  <div className="px-4 pb-4">
+                    <h4 className="text-gray-800 dark:text-gray-100 font-semibold line-clamp-2 min-h-[3rem]">{p.title}</h4>
+                    <div className="mt-3 flex items-center justify-between text-sm">
+                      <div className="flex items-baseline gap-2">
+                        {p.originalPrice ? (
+                          <>
+                            <span className="text-lg font-semibold text-red-600 dark:text-red-400">₹{formatPrice(p.price)}</span>
+                            <span className="text-gray-400 line-through">₹{formatPrice(p.originalPrice)}</span>
+                          </>
+                        ) : (
+                          <span className="text-lg font-semibold text-primary-700 dark:text-primary-300">₹{formatPrice(p.price)}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1 text-amber-500 text-xs">
+                        <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                        <span className="font-semibold">4.5 Star</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            {showViewAll2 && (
+              <Link href="/shop" className="hidden sm:flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-0 mr-1 px-3 py-1.5 rounded-full bg-white/90 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-primary-700 dark:text-primary-300 font-semibold shadow hover:shadow-md transition">
+                View all
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </section>

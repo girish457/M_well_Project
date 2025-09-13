@@ -97,29 +97,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 	const { addToCart, isInCart, updateQuantity, cartItems, removeFromCart } = useCart()
 	const { addToCompare, removeFromCompare, isInCompare } = useCompare()
 
-	const product = catalog.find(p => p.id === params.id)
-
-	if (!product) {
-		return (
-			<main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-				<div className="text-center">
-					<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Product Not Found</h1>
-					<Link href="/shop" className="text-primary-600 hover:text-primary-700 dark:text-primary-400">
-						Back to Shop
-					</Link>
-				</div>
-			</main>
-		)
-	}
-
-	const cartItem = cartItems.find(item => item.product.id === product.id)
-	const currentQuantity = cartItem ? cartItem.quantity : 0
-
-	// Keep local quantity in sync with cart state so default doesn't always show 1
-	React.useEffect(() => {
-		setQuantity(currentQuantity)
-	}, [currentQuantity])
-
 	// Reviews state
 	const [reviews, setReviews] = useState<Review[]>(mockReviews)
 	const averageRating = reviews.length === 0 ? 0 : reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
@@ -130,6 +107,17 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 	const [formName, setFormName] = useState('')
 	const [formEmail, setFormEmail] = useState('')
 	const [remember, setRemember] = useState(false)
+
+	const product = catalog.find(p => p.id === params.id)
+	const cartItem = cartItems.find(item => item.product.id === product?.id)
+	const currentQuantity = cartItem ? cartItem.quantity : 0
+
+	// Keep local quantity in sync with cart state so default doesn&apos;t always show 1
+	React.useEffect(() => {
+		if (product) {
+			setQuantity(currentQuantity)
+		}
+	}, [currentQuantity, product])
 
 	// Load saved name/email
 	React.useEffect(() => {
@@ -146,10 +134,25 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
 	// Check if product is in wishlist from localStorage (no database)
 	React.useEffect(() => {
-		const wishlist = JSON.parse(localStorage.getItem('mwell_wishlist') || '[]')
-		const isInWishlist = wishlist.includes(product.id)
-		setIsWishlisted(isInWishlist)
-	}, [product.id])
+		if (product) {
+			const wishlist = JSON.parse(localStorage.getItem('mwell_wishlist') || '[]')
+			const isInWishlist = wishlist.includes(product.id)
+			setIsWishlisted(isInWishlist)
+		}
+	}, [product])
+
+	if (!product) {
+		return (
+			<main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+				<div className="text-center">
+					<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Product Not Found</h1>
+					<Link href="/shop" className="text-primary-600 hover:text-primary-700 dark:text-primary-400">
+						Back to Shop
+					</Link>
+				</div>
+			</main>
+		)
+	}
 
 	// Wishlist functions - localStorage only (no database)
 	const handleWishlistToggle = () => {
