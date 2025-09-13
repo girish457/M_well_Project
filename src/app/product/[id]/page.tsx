@@ -90,6 +90,7 @@ function StarInput({ value, onChange }: { value: number; onChange: (v: number) =
 }
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
+	// ALL HOOKS MUST BE AT THE TOP - NO CONDITIONAL LOGIC BEFORE HOOKS
 	const [quantity, setQuantity] = useState(1)
 	const [isWishlisted, setIsWishlisted] = useState(false)
 	const [activeTab, setActiveTab] = useState<'description' | 'reviews'>('description')
@@ -108,6 +109,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 	const [formEmail, setFormEmail] = useState('')
 	const [remember, setRemember] = useState(false)
 
+	// Find product - this is safe to do after hooks
 	const product = catalog.find(p => p.id === params.id)
 	const cartItem = cartItems.find(item => item.product.id === product?.id)
 	const currentQuantity = cartItem ? cartItem.quantity : 0
@@ -141,6 +143,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 		}
 	}, [product])
 
+	// Early return AFTER all hooks
 	if (!product) {
 		return (
 			<main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">

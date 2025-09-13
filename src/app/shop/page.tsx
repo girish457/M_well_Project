@@ -136,6 +136,7 @@ function ProductCard({ p, viewMode }: { p: Product; viewMode: ViewMode }) {
 		}).format(price)
 	}
 
+	// Render list view
 	if (viewMode === 'list' || viewMode === 'list-bullet') {
 	return (
 			<div 

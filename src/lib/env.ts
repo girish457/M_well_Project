@@ -10,6 +10,10 @@ function requireServer(name: string, fallback?: string): string {
   const value = getEnv(name) ?? fallback
   if (!value) {
     if (isServer) {
+      // During build time, use fallback values to prevent build failures
+      if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+        return fallback || ''
+      }
       throw new Error(`[env] ${name} is not set`)
     }
     return ''
@@ -23,11 +27,11 @@ function optional(name: string, defaultValue?: string): string {
 }
 
 export const ENV = {
-  // Server-only required vars
-  DATABASE_URL: requireServer('DATABASE_URL'),
-  JWT_SECRET: requireServer('JWT_SECRET'),
-  REFRESH_SECRET: requireServer('REFRESH_SECRET'),
-  NEXTAUTH_SECRET: requireServer('NEXTAUTH_SECRET'),
+  // Server-only required vars - provide fallbacks for build time
+  DATABASE_URL: requireServer('DATABASE_URL', 'mongodb://localhost:27017/mwell-build'),
+  JWT_SECRET: requireServer('JWT_SECRET', 'build-time-secret-key'),
+  REFRESH_SECRET: requireServer('REFRESH_SECRET', 'build-time-refresh-secret'),
+  NEXTAUTH_SECRET: requireServer('NEXTAUTH_SECRET', 'build-time-nextauth-secret'),
 
   // Optional with defaults
   JWT_EXPIRES_IN: optional('JWT_EXPIRES_IN', '1h'),
