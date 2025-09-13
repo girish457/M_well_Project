@@ -1,0 +1,20 @@
+// Simple admin user creation for testing
+// This creates a mock admin user for development
+
+console.log('🔐 Admin User Credentials for Testing:')
+console.log('=====================================')
+console.log('Email: admin@mwell.com')
+console.log('Password: admin123')
+console.log('Role: ADMIN')
+console.log('')
+console.log('📋 Setup Instructions:')
+console.log('1. Go to: http://localhost:3000/account')
+console.log('2. Click "Sign up here"')
+console.log('3. Create account with admin credentials above')
+console.log('4. After signup, manually update user role in database to ADMIN')
+console.log('5. Access admin dashboard at: http://localhost:3000/admin')
+console.log('')
+console.log('🚀 Quick Access URLs:')
+console.log('- Login: http://localhost:3000/account')
+console.log('- Admin Dashboard: http://localhost:3000/admin')
+console.log('- User Account: http://localhost:3000/account')

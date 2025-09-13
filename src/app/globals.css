@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  transition: none;
+}
+
+/* Enable transitions only after page is loaded */
+html.loaded body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  /* Prevent flash of unstyled content */
+  html {
+    transition: none !important;
+  }
+  
+  /* Dark mode styles */
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* Ensure smooth transitions after initial load */
+  html.loaded {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Apply transitions to main container after load */
+  html.loaded .main-container {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-primary-600 dark:text-primary-400 font-medium py-2 px-4 rounded-lg border border-primary-600 dark:border-primary-400 transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-2xl p-6 border border-gray-100 dark:border-gray-700 transition-all duration-300 transform hover:scale-105 hover:shadow-xl dark:hover:shadow-2xl;
+  }
+  
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* 3D Card Effects */
+  .card-3d {
+    @apply transform-gpu transition-all duration-300;
+    transform-style: preserve-3d;
+  }
+  
+  .card-3d:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+  }
+  
+  .card-3d-flip {
+    @apply transform-gpu transition-all duration-500;
+    transform-style: preserve-3d;
+  }
+  
+  .card-3d-flip:hover {
+    transform: rotateY(180deg);
+  }
+  
+  /* Floating Elements */
+  .float-element {
+    @apply animate-float;
+  }
+  
+  .float-element-delayed {
+    @apply animate-float-delayed;
+  }
+  
+  /* Glow Effects */
+  .glow-primary {
+    @apply shadow-lg;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  .glow-accent {
+    @apply shadow-lg;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+  
+  .dark .glow-primary {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  }
+  
+  .dark .glow-accent {
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+  }
+  
+  /* Gradient Backgrounds */
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary-500 to-primary-700;
+  }
+  
+  .gradient-accent {
+    @apply bg-gradient-to-br from-accent-500 to-accent-700;
+  }
+  
+  .gradient-dark {
+    @apply bg-gradient-to-br from-gray-800 to-gray-900;
+  }
+  
+  /* Text Effects */
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+  
+  .text-3d {
+    text-shadow: 
+      0 1px 0 #ccc,
+      0 2px 0 #c9c9c9,
+      0 3px 0 #bbb,
+      0 4px 0 #b9b9b9,
+      0 5px 0 #aaa,
+      0 6px 1px rgba(0,0,0,.1),
+      0 0 5px rgba(0,0,0,.1),
+      0 1px 3px rgba(0,0,0,.3),
+      0 3px 5px rgba(0,0,0,.2),
+      0 5px 10px rgba(0,0,0,.25);
+  }
+  
+  /* Animation Classes */
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out;
+  }
+  
+  .animate-slide-down {
+    animation: slide-down 0.6s ease-out;
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+  
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-2xl;
+  }
+  
+  .hover-rotate {
+    @apply transition-all duration-300 transform hover:rotate-3;
+  }
+  
+  .hover-scale {
+    @apply transition-all duration-300 transform hover:scale-110;
+  }
+  
+  /* Logo Styling */
+  .logo-image {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15)) contrast(1.1) brightness(1.05);
+    transition: all 0.3s ease;
+    object-fit: contain;
+  }
+  
+  .logo-image:hover {
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.25)) contrast(1.15) brightness(1.1);
+    transform: scale(1.05);
+  }
+  
+  .dark .logo-image {
+    filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.1)) contrast(1.1) brightness(1.1);
+  }
+  
+  .dark .logo-image:hover {
+    filter: drop-shadow(0 6px 20px rgba(255, 255, 255, 0.2)) contrast(1.15) brightness(1.15);
+    transform: scale(1.05);
+  }
+  
+  /* Price Filter Styles */
+  .price-slider {
+    @apply relative h-2 bg-gray-300 dark:bg-gray-600 rounded-full cursor-pointer;
+    will-change: transform;
+  }
+  
+  .price-slider-track {
+    @apply absolute h-2 bg-gray-500 dark:bg-gray-400 rounded-full;
+    transition: left 0.1s ease-out, width 0.1s ease-out;
+    will-change: left, width;
+  }
+  
+  .price-slider-handle {
+    @apply absolute w-5 h-5 rounded-full cursor-pointer transform -translate-y-1.5 -translate-x-2.5 shadow-lg hover:shadow-xl;
+    transition: left 0.1s ease-out, transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    will-change: left, transform;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+  
+  .price-slider-handle-min {
+    @apply bg-green-500 hover:bg-green-600;
+  }
+  
+  .price-slider-handle-max {
+    @apply bg-white border-2 border-green-500 hover:border-green-600;
+  }
+  
+  .price-slider-handle:active {
+    @apply scale-110 shadow-2xl;
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+  }
+  
+  .dark .price-slider-handle-max {
+    @apply bg-gray-800 border-green-500;
+  }
+  
+  .dark .price-slider-handle-max:hover {
+    @apply border-green-400;
+  }
+  
+  /* Smooth dragging state */
+  .price-slider-handle.dragging {
+    @apply scale-110 shadow-2xl;
+    transition: none;
+  }
+  
+  .price-slider-track.dragging {
+    transition: none;
+  }
+  /* Heart pop animation (no size change for final state) */
+  .heart-pop {
+    animation: heart-pop-keyframes 0.3s ease-out;
+  }
+}
+
+@keyframes heart-pop-keyframes {
+  0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(239,68,68,0)); }
+  40% { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(239,68,68,0.8)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(239,68,68,0.7)); }
+}
