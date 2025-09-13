@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useCompare } from '@/contexts/CompareContext'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -443,7 +443,7 @@ function LatestList({ items }: { items: Product[] }) {
 	)
 }
 
-export default function ShopPage() {
+function ShopPageContent() {
     const searchParams = useSearchParams()
 	const [minPrice, setMinPrice] = React.useState(0)
 	const [maxPrice, setMaxPrice] = React.useState(2000)
@@ -650,6 +650,21 @@ export default function ShopPage() {
 				<ProductTabs products={catalog} />
 			</div>
 		</main>
+	)
+}
+
+export default function ShopPage() {
+	return (
+		<Suspense fallback={
+			<main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+				<div className="text-center">
+					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+					<p className="text-gray-600 dark:text-gray-400">Loading products...</p>
+				</div>
+			</main>
+		}>
+			<ShopPageContent />
+		</Suspense>
 	)
 }
 

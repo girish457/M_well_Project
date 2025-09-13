@@ -7,7 +7,6 @@ import { ENV } from "./env"
 
 export const authOptions: NextAuthOptions = {
   secret: ENV.NEXTAUTH_SECRET,
-  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -67,7 +66,6 @@ export const authOptions: NextAuthOptions = {
     }
   },
   pages: {
-    signIn: "/account",
-    signUp: "/account"
+    signIn: "/account"
   }
 }

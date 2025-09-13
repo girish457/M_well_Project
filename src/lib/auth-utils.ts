@@ -5,16 +5,18 @@ export const getAuthToken = (): string | null => {
   return localStorage.getItem('mwell_token') || localStorage.getItem('mwell_user')
 }
 
-export const getAuthHeaders = () => {
+export const getAuthHeaders = (): Record<string, string> => {
   if (typeof window === 'undefined') return { 'Content-Type': 'application/json' }
   
   try {
     const userData = localStorage.getItem('mwell_user')
     if (userData) {
       const user = JSON.parse(userData)
-      return {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.email}`
+      if (user.email) {
+        return {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.email}`
+        }
       }
     }
   } catch (error) {
